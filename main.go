@@ -28,7 +28,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 			StatusCode: 500,
 		}, err
 	}
-	svc.PutItem(&dynamodb.PutItemInput{
+	_, err = svc.PutItem(&dynamodb.PutItemInput{
 		TableName: aws.String("alg-newsletter"),
 		Item: map[string]*dynamodb.AttributeValue{
 			"email": &dynamodb.AttributeValue{
