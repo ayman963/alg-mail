@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: 2010-09-09
 Transform:
-- AWS::Serverless-2016-10-31
-- AWS::CodeStar
+  - AWS::Serverless-2016-10-31
+  - AWS::CodeStar
 
 Parameters:
   ProjectId:
@@ -26,10 +26,10 @@ Resources:
       Runtime: go1.x
       Role:
         Fn::ImportValue:
-          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+          !Join ["-", [!Ref "ProjectId", !Ref "AWS::Region", "LambdaTrustRole"]]
       Events:
         GetEvent:
           Type: Api
           Properties:
             Path: /
-            Method: get
+            Method: post
