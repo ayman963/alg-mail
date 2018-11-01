@@ -6,6 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
+	"github.com/sirupsen/logrus"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -35,6 +36,12 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 			},
 		},
 	})
+	if err != nil {
+		logrus.Error(err.Error())
+		return events.APIGatewayProxyResponse{
+			StatusCode: 500,
+		}, err
+	}
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
 	}, nil
