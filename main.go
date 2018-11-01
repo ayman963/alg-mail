@@ -12,7 +12,7 @@ import (
 )
 
 type input struct {
-	email string `json: "emailAddress"`
+	Email string `json:"emailAddress"`
 }
 
 // Handler is executed by AWS Lambda in the main function. Once the request
@@ -31,7 +31,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		TableName: aws.String("alg-newsletter"),
 		Item: map[string]*dynamodb.AttributeValue{
 			"email": &dynamodb.AttributeValue{
-				S: &mail.email,
+				S: &mail.Email,
 			},
 		},
 	})
