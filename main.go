@@ -26,6 +26,8 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	if err != nil {
 		return events.APIGatewayProxyResponse{
 			StatusCode: 500,
+			Headers: map[string]string{
+				"Access-Allow-Control-Origin": "http://www.ausbildung-leicht-gemacht.de"},
 		}, err
 	}
 	_, err = svc.PutItem(&dynamodb.PutItemInput{
@@ -40,10 +42,14 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		logrus.Error(err.Error())
 		return events.APIGatewayProxyResponse{
 			StatusCode: 500,
+			Headers: map[string]string{
+				"Access-Allow-Control-Origin": "http://www.ausbildung-leicht-gemacht.de"},
 		}, err
 	}
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
+		Headers: map[string]string{
+			"Access-Allow-Control-Origin": "http://www.ausbildung-leicht-gemacht.de"},
 	}, nil
 
 }
