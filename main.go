@@ -17,55 +17,69 @@ type input struct {
 	Email string `json:"emailAddress"`
 }
 
-func setupResponse(w *http.ResponseWriter, req *http.Request) {
-	(*w).Header().Set("Access-Control-Allow-Origin", "*")
-	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
-}
-
 // Handler is executed by AWS Lambda in the main function. Once the request
 // is processed, it returns an Amazon API Gateway response object to AWS Lambda
 func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	var mail input
-	mySession := session.New()
-	svc := dynamodb.New(mySession, aws.NewConfig().WithRegion("eu-west-1"))
-	err := json.Unmarshal([]byte(request.Body), &mail)
-	if err != nil {
+
+	switch request.HTTPMethod {
+	case http.MethodPost:
+		mySession := session.New()
+		svc := dynamodb.New(mySession, aws.NewConfig().WithRegion("eu-west-1"))
+		err := json.Unmarshal([]byte(request.Body), &mail)
+		if err != nil {
+			return events.APIGatewayProxyResponse{
+
+				StatusCode: 500,
+				Headers: map[string]string{
+					"Access-Allow-Control-Origin":  "http://www.ausbildung-leicht-gemacht.de",
+					"Access-Control-Allow-Headers": "Accept, Content-Type, application/x-www-form-urlencoded",
+					"Access-Control-Allow-Methods": "POST",
+				},
+			}, err
+		}
+		_, err = svc.PutItem(&dynamodb.PutItemInput{
+			TableName: aws.String("alg-newsletter"),
+			Item: map[string]*dynamodb.AttributeValue{
+				"email": &dynamodb.AttributeValue{
+					S: &mail.Email,
+				},
+			},
+		})
+		if err != nil {
+			logrus.Error(err.Error())
+			return events.APIGatewayProxyResponse{
+				StatusCode: 500,
+				Headers: map[string]string{
+					"Access-Allow-Control-Origin":  "http://www.ausbildung-leicht-gemacht.de",
+					"Access-Control-Allow-Headers": "Accept, Content-Type, application/x-www-form-urlencoded",
+					"Access-Control-Allow-Methods": "POST"},
+			}, err
+		}
 		return events.APIGatewayProxyResponse{
-			StatusCode: 500,
+			StatusCode: 200,
+			Headers: map[string]string{
+				"Access-Allow-Control-Origin": "http://www.ausbildung-leicht-gemacht.de",
+			},
+		}, nil
+	case http.MethodOptions:
+		return events.APIGatewayProxyResponse{
+			StatusCode: 200,
 			Headers: map[string]string{
 				"Access-Allow-Control-Origin":  "http://www.ausbildung-leicht-gemacht.de",
 				"Access-Control-Allow-Headers": "Accept, Content-Type, application/x-www-form-urlencoded",
 				"Access-Control-Allow-Methods": "POST",
 			},
-		}, err
-	}
-	_, err = svc.PutItem(&dynamodb.PutItemInput{
-		TableName: aws.String("alg-newsletter"),
-		Item: map[string]*dynamodb.AttributeValue{
-			"email": &dynamodb.AttributeValue{
-				S: &mail.Email,
-			},
-		},
-	})
-	if err != nil {
-		logrus.Error(err.Error())
-		return events.APIGatewayProxyResponse{
-			StatusCode: 500,
-			Headers: map[string]string{
-				"Access-Allow-Control-Origin":  "http://www.ausbildung-leicht-gemacht.de",
-				"Access-Control-Allow-Headers": "Accept, Content-Type, application/x-www-form-urlencoded",
-				"Access-Control-Allow-Methods": "POST"},
-		}, err
-	}
-	return events.APIGatewayProxyResponse{
-		StatusCode: 200,
-		Headers: map[string]string{
-			"Access-Allow-Control-Origin":  "http://www.ausbildung-leicht-gemacht.de",
-			"Access-Control-Allow-Headers": "Accept, Content-Type, application/x-www-form-urlencoded",
-			"Access-Control-Allow-Methods": "POST"},
-	}, nil
+		}, nil
 
+	}
+
+	return events.APIGatewayProxyResponse{
+		StatusCode: 404,
+		Headers: map[string]string{
+			"Access-Allow-Control-Origin": "http://www.ausbildung-leicht-gemacht.de",
+		},
+	}, nil
 }
 
 func main() {

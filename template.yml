@@ -33,3 +33,4 @@ Resources:
           Properties:
             Path: /
             Method: post
+            Method: options
