@@ -34,7 +34,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 				StatusCode: 500,
 				Headers: map[string]string{
-					"Access-Allow-Control-Origin":  "*",
+					"Access-Control-Allow-Origin":  "*",
 					"Access-Control-Allow-Headers": "Accept, Content-Type, application/x-www-form-urlencoded",
 					"Access-Control-Allow-Methods": "POST",
 				},
@@ -55,7 +55,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 			return events.APIGatewayProxyResponse{
 				StatusCode: 500,
 				Headers: map[string]string{
-					"Access-Allow-Control-Origin":  "*",
+					"Access-Control-Allow-Origin":  "*",
 					"Access-Control-Allow-Headers": "Accept, Content-Type, application/x-www-form-urlencoded",
 					"Access-Control-Allow-Methods": "POST"},
 			}, err
@@ -64,14 +64,14 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		return events.APIGatewayProxyResponse{
 			StatusCode: 200,
 			Headers: map[string]string{
-				"Access-Allow-Control-Origin": "*",
+				"Access-Control-Allow-Origin": "*",
 			},
 		}, nil
 	case http.MethodOptions:
 		return events.APIGatewayProxyResponse{
 			StatusCode: 200,
 			Headers: map[string]string{
-				"Access-Allow-Control-Origin":  "*",
+				"Access-Control-Allow-Origin":  "*",
 				"Access-Control-Allow-Headers": "Accept, Content-Type, application/x-www-form-urlencoded",
 				"Access-Control-Allow-Methods": "POST",
 			},
@@ -81,7 +81,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	return events.APIGatewayProxyResponse{
 		StatusCode: 404,
 		Headers: map[string]string{
-			"Access-Allow-Control-Origin":  "*",
+			"Access-Control-Allow-Origin":  "*",
 			"Access-Control-Allow-Headers": "Accept, Content-Type, application/x-www-form-urlencoded",
 			"Access-Control-Allow-Methods": "POST",
 		},
