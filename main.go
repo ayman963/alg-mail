@@ -32,7 +32,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 				StatusCode: 500,
 				Headers: map[string]string{
-					"Access-Allow-Control-Origin":  "https://ow53ugb38i.execute-api.eu-west-1.amazonaws.com",
+					"Access-Allow-Control-Origin":  "http://www.ausbildung-leicht-gemacht.de",
 					"Access-Control-Allow-Headers": "Accept, Content-Type, application/x-www-form-urlencoded",
 					"Access-Control-Allow-Methods": "POST",
 				},
@@ -51,7 +51,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 			return events.APIGatewayProxyResponse{
 				StatusCode: 500,
 				Headers: map[string]string{
-					"Access-Allow-Control-Origin":  "https://ow53ugb38i.execute-api.eu-west-1.amazonaws.com",
+					"Access-Allow-Control-Origin":  "http://www.ausbildung-leicht-gemacht.de",
 					"Access-Control-Allow-Headers": "Accept, Content-Type, application/x-www-form-urlencoded",
 					"Access-Control-Allow-Methods": "POST"},
 			}, err
@@ -66,7 +66,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		return events.APIGatewayProxyResponse{
 			StatusCode: 200,
 			Headers: map[string]string{
-				"Access-Allow-Control-Origin":  "https://ow53ugb38i.execute-api.eu-west-1.amazonaws.com",
+				"Access-Allow-Control-Origin":  "http://www.ausbildung-leicht-gemacht.de",
 				"Access-Control-Allow-Headers": "Accept, Content-Type, application/x-www-form-urlencoded",
 				"Access-Control-Allow-Methods": "POST",
 			},
@@ -77,7 +77,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	return events.APIGatewayProxyResponse{
 		StatusCode: 404,
 		Headers: map[string]string{
-			"Access-Allow-Control-Origin":  "https://ow53ugb38i.execute-api.eu-west-1.amazonaws.com",
+			"Access-Allow-Control-Origin":  "http://www.ausbildung-leicht-gemacht.de",
 			"Access-Control-Allow-Headers": "Accept, Content-Type, application/x-www-form-urlencoded",
 			"Access-Control-Allow-Methods": "POST",
 		},
