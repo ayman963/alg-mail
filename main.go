@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -28,6 +29,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		svc := dynamodb.New(mySession, aws.NewConfig().WithRegion("eu-west-1"))
 		err := json.Unmarshal([]byte(request.Body), &mail)
 		if err != nil {
+			fmt.Println("Fehlermeledung im 500 antwort", err)
 			return events.APIGatewayProxyResponse{
 
 				StatusCode: 500,
@@ -38,6 +40,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 				},
 			}, err
 		}
+
 		_, err = svc.PutItem(&dynamodb.PutItemInput{
 			TableName: aws.String("alg-newsletter"),
 			Item: map[string]*dynamodb.AttributeValue{
@@ -47,6 +50,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 			},
 		})
 		if err != nil {
+			fmt.Println("Fehlermeledung beim Putin", err)
 			logrus.Error(err.Error())
 			return events.APIGatewayProxyResponse{
 				StatusCode: 500,
@@ -56,6 +60,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 					"Access-Control-Allow-Methods": "POST"},
 			}, err
 		}
+
 		return events.APIGatewayProxyResponse{
 			StatusCode: 200,
 			Headers: map[string]string{
